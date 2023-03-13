@@ -65,11 +65,11 @@ namespace ZooManagement
         public void ShowAnimal()
         {
             Console.WriteLine("Name: " + Name);
-            Console.WriteLine("kingdom: " + Kingdom);
-            Console.WriteLine("Age: " + Age);
+            Console.WriteLine("Kingdom: " + Kingdom);
+            Console.WriteLine("Age: " + Age + " years old");
             Console.WriteLine("Enclosure: " + Enclosure);
             Console.WriteLine("Diet: " + Diet);
-            Console.WriteLine("Behaviour: " + Behaviour);
+            Console.WriteLine("Behaviour: " + Behaviour + "\n");
         }
     }
 }

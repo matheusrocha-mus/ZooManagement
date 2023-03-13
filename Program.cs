@@ -10,18 +10,34 @@ namespace ZooManagement
 {
     internal class Program
     {
+        public static void CalculateAvgAgeByKingdom(List<Animal> animals)
+        {
+            var kingdomGroups = animals.GroupBy(a => a.Kingdom);
+
+            foreach (var group in kingdomGroups)
+            {
+                var avgAge = group.Average(a => a.Age);
+                Console.WriteLine($"Average age of {group.Key}s: {avgAge}\n");
+            }
+        }
+
+        public static void CalculateAnimalsByEnclosure(List<Animal> animals)
+        {
+            var enclosureGroups = animals.GroupBy(a => a.Enclosure);
+
+            foreach (var group in enclosureGroups)
+            {
+                var count = group.Count();
+                var percentage = (double)count / animals.Count * 100;
+                Console.WriteLine($"Number of {group.Key} animals: {count}\nPercentage of {group.Key} animals: {percentage}%\n");
+            }
+        }
 
         public static void Main(string[] args)
         {
             bool keepRegistering; // Used to handle invalid user input in every `Console.ReadLine`.
             string input;
-
             List<Animal> animalList = new List<Animal>();
-            List<int> agesFish = new List<int>();
-            List<int> agesAmphibian = new List<int>();
-            List<int> agesReptile = new List<int>();
-            List<int> agesBird = new List<int>();
-            List<int> agesMammal = new List<int>();
 
             do
             {
@@ -58,6 +74,7 @@ namespace ZooManagement
                                 Console.Clear();
                             }
                         }
+                        Console.Clear();
 
                         int age = -1;
                         while (age == -1)
@@ -77,6 +94,7 @@ namespace ZooManagement
                                 Console.Clear();
                             }
                         }
+                        Console.Clear();
 
                         string kingdom = null;
                         while (kingdom == null)
@@ -87,15 +105,23 @@ namespace ZooManagement
                             {
                                 case "1":
                                 case "fish":
+                                    kingdom = "Fish";
+                                    break;
                                 case "2":
                                 case "amphibian":
+                                    kingdom = "Amphibian";
+                                    break;
                                 case "3":
                                 case "reptile":
+                                    kingdom = "Reptile";
+                                    break;
                                 case "4":
                                 case "bird":
+                                    kingdom = "Bird";
+                                    break;
                                 case "5":
                                 case "mammal":
-                                    kingdom = input[0].ToString().ToUpper() + input.Substring(1).ToLower();
+                                    kingdom = "Mammal";
                                     break;
 
                                 default:
@@ -107,6 +133,7 @@ namespace ZooManagement
                                     break;
                             }
                         }
+                        Console.Clear();
 
                         string enclosure = null;
                         while (enclosure == null)
@@ -117,9 +144,11 @@ namespace ZooManagement
                             {
                                 case "1":
                                 case "wild":
+                                    enclosure = "Wild";
+                                    break;
                                 case "2":
                                 case "captive":
-                                    enclosure = input[0].ToString().ToUpper() + input.Substring(1).ToLower();
+                                    enclosure = "Captive";
                                     break;
 
                                 default:
@@ -131,6 +160,7 @@ namespace ZooManagement
                                     break;
                             }
                         }
+                        Console.Clear();
 
                         string diet = null;
                         while (diet == null)
@@ -141,11 +171,15 @@ namespace ZooManagement
                             {
                                 case "1":
                                 case "herbivore":
+                                    diet = "Herbivore";
+                                    break;
                                 case "2":
                                 case "carnivore":
+                                    diet = "Carnivore";
+                                    break;
                                 case "3":
                                 case "omnivore":
-                                    diet = input[0].ToString().ToUpper() + input.Substring(1).ToLower();
+                                    diet = "Omnivore";
                                     break;
 
                                 default:
@@ -157,6 +191,7 @@ namespace ZooManagement
                                     break;
                             }
                         }
+                        Console.Clear();
 
                         string behaviour = null;
                         while (behaviour == null)
@@ -167,9 +202,11 @@ namespace ZooManagement
                             {
                                 case "1":
                                 case "aggressive":
+                                    behaviour = "Aggressive";
+                                    break;
                                 case "2":
                                 case "docile":
-                                    behaviour = input[0].ToString().ToUpper() + input.Substring(1).ToLower();
+                                    behaviour = "Docile";
                                     break;
 
                                 default:
@@ -181,6 +218,7 @@ namespace ZooManagement
                                     break;
                             }
                         }
+                        Console.Clear();
 
                         Animal newAnimal = new Animal(name, age, kingdom, enclosure, diet, behaviour);
                         animalList.Add(newAnimal);
@@ -188,34 +226,38 @@ namespace ZooManagement
 
                     case "no":
                     case "2":
-                        keepRegistering = true;
+                        keepRegistering = false;
                         if (animalList.Count == 0)
                         {
                             Console.WriteLine("Thank you for using our services! Enter any key to exit.");
                             Console.ReadKey();
                             Environment.Exit(0);
                         }
-
                         else
                         {
-                            Console.WriteLine("Here's a list of all new registered animals:\n");
+                            Console.WriteLine("Here's a list of all new registered animals:\n\n");
                             foreach (Animal animal in animalList)
                             {
                                 animal.ShowAnimal();
                             }
+                            Console.WriteLine("\nPress any key to continue");
+                            Console.ReadKey();
+                            Console.Clear();
+                            CalculateAvgAgeByKingdom(animalList);
+                            CalculateAnimalsByEnclosure(animalList);
                         }
                         break;
 
                     default:
-                        keepRegistering = false;
+                        keepRegistering = true;
                         Console.WriteLine("Invalid input. Please enter a valid option (1 or 2).");
                         System.Threading.Thread.Sleep(2000);
                         Console.Clear();
                         break;
                 }
-            } while (!keepRegistering);
+            } while (keepRegistering);
 
-            Console.WriteLine("\nThank you for using our services! Press any key to exit.");
+            Console.WriteLine("\n\nThank you for using our services! Press any key to exit.");
             Console.ReadKey();
         }
     }
