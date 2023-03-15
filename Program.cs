@@ -17,7 +17,7 @@ namespace ZooManagement
             foreach (var group in kingdomGroups)
             {
                 var avgAge = group.Average(a => a.Age);
-                Console.WriteLine($"Average age of {group.Key}s: {avgAge}\n");
+                Console.WriteLine($"{group.Key}s - {avgAge.ToString("0.00")} years old");
             }
         }
 
@@ -29,7 +29,22 @@ namespace ZooManagement
             {
                 var count = group.Count();
                 var percentage = (double)count / animals.Count * 100;
-                Console.WriteLine($"Number of {group.Key} animals: {count}\nPercentage of {group.Key} animals: {percentage}%\n");
+                Console.WriteLine($"{group.Key} - {count} animals ({percentage.ToString("0.00")}%)");
+            }
+        }
+
+        public static void CalculateFoodIntakeByDiet(List<Animal> animals)
+        {
+            var dietGroups = animals.GroupBy(a => a.Diet);
+
+            foreach (var group in dietGroups)
+            {
+                double totalFoodIntake = 0;
+                foreach (Animal animal in group)
+                {
+                    totalFoodIntake += animal.FoodIntake;
+                }
+                Console.WriteLine($"{group.Key} - {totalFoodIntake} kg");
             }
         }
 
@@ -193,6 +208,26 @@ namespace ZooManagement
                         }
                         Console.Clear();
 
+                        double foodIntake = -1.0;
+                        while (foodIntake == -1.0)
+                        {
+                            Console.WriteLine("Enter the animal's daily food intake (in kilograms):");
+                            input = Console.ReadLine();
+                            if (!string.IsNullOrEmpty(input) & double.TryParse(input, out double parsedFoodIntake) & parsedFoodIntake > 0)
+                            {
+                                foodIntake = parsedFoodIntake;
+                            }
+                            else
+                            {
+                                foodIntake = -1.0;
+                                Console.Clear();
+                                Console.WriteLine("Invalid input. A valid daily food intake value consists only of numbers - be it integer or float (animal's daily food intake in kilos).");
+                                System.Threading.Thread.Sleep(3000);
+                                Console.Clear();
+                            }
+                        }
+                        Console.Clear();
+
                         string behaviour = null;
                         while (behaviour == null)
                         {
@@ -220,7 +255,7 @@ namespace ZooManagement
                         }
                         Console.Clear();
 
-                        Animal newAnimal = new Animal(name, age, kingdom, enclosure, diet, behaviour);
+                        Animal newAnimal = new Animal(name, age, kingdom, enclosure, diet, foodIntake, behaviour);
                         animalList.Add(newAnimal);
                         break;
 
@@ -243,8 +278,12 @@ namespace ZooManagement
                             Console.WriteLine("\nPress any key to continue");
                             Console.ReadKey();
                             Console.Clear();
+                            Console.WriteLine("Average age of new registered animals for each kingdom:\n");
                             CalculateAvgAgeByKingdom(animalList);
+                            Console.WriteLine("\n\nTotal number and percentage of new registered animals for each enclosuring type:\n");
                             CalculateAnimalsByEnclosure(animalList);
+                            Console.WriteLine("\n\nTotal daily food intake of new registered animals for each diet type:\n");
+                            CalculateFoodIntakeByDiet(animalList);
                         }
                         break;
 

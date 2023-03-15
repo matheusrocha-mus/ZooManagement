@@ -14,6 +14,7 @@ namespace ZooManagement
         private string kingdom;
         private string enclosure;
         private string diet;
+        private double foodIntake;
         private string behaviour;
 
         public string Name
@@ -45,6 +46,11 @@ namespace ZooManagement
             get { return diet; }
             set { diet = value; }
         }
+        public double FoodIntake
+        {
+            get { return foodIntake; }
+            set { foodIntake = value; }
+        }
 
         public string Behaviour
         {
@@ -52,13 +58,14 @@ namespace ZooManagement
             set { behaviour = value; }
         }
 
-        public Animal(string name, int age, string kingdom, string enclosure, string diet, string behaviour)
+        public Animal(string name, int age, string kingdom, string enclosure, string diet, double foodIntake, string behaviour)
         {
             Name = name;
             Age = age;
             Kingdom = kingdom;
             Enclosure = enclosure;
             Diet = diet;
+            FoodIntake = foodIntake;
             Behaviour = behaviour;
         }
 
@@ -69,6 +76,7 @@ namespace ZooManagement
             Console.WriteLine("Age: " + Age + " years old");
             Console.WriteLine("Enclosure: " + Enclosure);
             Console.WriteLine("Diet: " + Diet);
+            Console.WriteLine("Daily food intake (in kilograms): " + FoodIntake + " kg");
             Console.WriteLine("Behaviour: " + Behaviour + "\n");
         }
     }
